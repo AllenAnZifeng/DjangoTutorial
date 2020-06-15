@@ -1,0 +1,32 @@
+{% extends 'forum/layout.html' %}
+
+{% block content %}
+    <div class="card p-8 m-2">
+        <div class="card-body">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div style="font-weight: bold">Title</div>
+                <style>
+                    #id_title {
+                        width: 20vw;
+                        height: 4em;
+                    }
+                </style>
+                <div class="my-3" style="width: 40vw" id="title">{{ form.title }}</div>
+                <div style="font-weight: bold">Content</div>
+                <style>
+                    #id_content {
+                        width: 40vw;
+                        height: 10em;
+                    }
+                </style>
+                <div class="my-3" style="width: 40vw" id="content">{{ form.content }}</div>
+                <div>
+                    <input class="btn btn-primary" type="submit" value="Submit">
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

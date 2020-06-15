@@ -1,0 +1,25 @@
+from django.db import models
+from django.utils import timezone
+import datetime
+
+# Create your models here.
+# Model defines database layout and metadata.
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('data published')
+
+    def was_published_recently(self):
+        return timezone.now()>=self.pub_date>=timezone.now()-datetime.timedelta(days=1)
+
+    def __str__(self):
+        return self.question_text
+
+class Choice(models.Model):
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+    question = models.ForeignKey(Question,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.choice_text
+

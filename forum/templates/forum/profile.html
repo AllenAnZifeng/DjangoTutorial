@@ -1,0 +1,68 @@
+{% extends 'forum/layout.html' %}
+
+{% block content %}
+
+    <div class="col-8 m-4 d-flex flex-column">
+        {% if threads or posts or comments %}
+            {% if threads %}
+
+                <h3> Threads</h3>
+
+                {% for thread in threads %}
+                    <div class="card m-2" onclick="window.location='{% url 'forum:createPost' thread.id %}#thread{{ thread.id }}'"
+                         style="cursor: pointer">
+                        <div class="card-body">
+                            <h6 class="mb-2 text-muted">{{ thread.date_created }}
+                                --- {{ thread.author.user.username }}</h6>
+                            <p class="card-text" id="thread{{ thread.id }}">{{ thread.content }}</p>
+                            <script>document.querySelector('#thread{{ thread.id }}').innerHTML = marked(document.querySelector("#thread{{ thread.id }}").innerHTML)</script>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            {% endif %}
+
+            {% if posts %}
+
+                <h3> Posts</h3>
+
+                {% for post in posts %}
+                    <div class="card m-2" onclick="window.location='{% url 'forum:createPost' post.thread.id %}#post{{ post.id }}'"
+                         style="cursor: pointer">
+                        <div class="card-body">
+                            <h6 class="mb-2 text-muted">{{ post.date_created }}
+                                --- {{ post.author.user.username }}</h6>
+                            <p class="card-text" id="post{{ post.id }}">{{ post.content }}</p>
+                            <script>document.querySelector('#post{{ post.id }}').innerHTML = marked(document.querySelector("#post{{ post.id }}").innerHTML)</script>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            {% endif %}
+
+
+            {% if comments %}
+
+                <h3> Comments</h3>
+
+                {% for comment in comments %}
+                    <div class="card m-2" onclick="window.location='{% url 'forum:createPost' comment.post.thread.id %}#comment{{ comment.id }}'"
+                         style="cursor: pointer">
+                        <div class="card-body">
+                            <h6 class="mb-2 text-muted">{{ comment.date_created }}
+                                --- {{ comment.author.user.username }}</h6>
+                            <p class="card-text" id="comment{{ comment.id }}">{{ comment.content }}</p>
+                            <script>document.querySelector('#comment{{ comment.id }}').innerHTML = marked(document.querySelector("#comment{{ comment.id }}").innerHTML)</script>
+
+                        </div>
+                    </div>
+
+                {% endfor %}
+            {% endif %}
+        {% else %}
+
+            <div> You haven't written anything yet!</div>
+        {% endif %}
+    </div>
+
+{% endblock %}

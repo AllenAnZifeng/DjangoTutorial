@@ -1,0 +1,111 @@
+{% extends 'forum/layout.html' %}
+
+
+{% block content %}
+
+    <div style="display: flex;flex-direction: column">
+
+        <div class="h3 m-3 " id="thread{{ thread.id }}">Thread</div>
+        <div class="card m-2 col-8">
+            <div class="card-body">
+                <div style="display: flex;flex-direction: row;justify-content: space-between;">
+
+                    <h5 class="card-title">{{ thread.title }} --- <a style="text-decoration: none"
+                                                                     href="{% url 'forum:profile' thread.author.id %}">{{ thread.author }}</a>
+                    </h5>
+                    <h6 class="mb-2 text-muted">{{ thread.date_created }}</h6>
+                </div>
+
+
+                <p class="card-text" id="threadContent">{{ thread.content }}</p>
+                <script>document.querySelector('#threadContent').innerHTML = marked(document.getElementById("threadContent").innerHTML)</script>
+            </div>
+        </div>
+
+        <div class="h3 m-3 ">
+            Post
+        </div>
+        {% if posts %}
+            {% for post in posts %}
+                {% include 'forum/createComment.html' with postID=post.id %}
+
+                <div class="card m-2 col-8">
+                    <div class="card-body">
+
+                        <div style="display: flex;flex-direction: column;">
+
+                            <h5 class="card-text"><span id="post{{ post.id }}">{{ post.content }}</span>
+                            </h5>
+                            <h6 style="display: flex;flex-direction: row;justify-content: flex-end"
+                                class="mb-2 text-muted"> --- <a style="text-decoration: none"
+                                                                href="{% url 'forum:profile' post.author.id %}">{{ post.author }}</a>&emsp; {{ post.date_created }}
+                            </h6>
+
+                        </div>
+                        <script>document.querySelector('#post{{ post.id }}').innerHTML = marked(document.querySelector("#post{{ post.id }}").innerHTML)</script>
+
+                        {% if post.comments.all %}
+                            <div class="h5 mt-3 mb-2 ">
+                                Comments
+                            </div>
+
+                            {% for comment in post.comments.all %}
+                                <p class="card-text text-muted"
+                                   style="color: lightgrey; margin: 1em 0"><span
+                                        id="comment{{ comment.id }}">{{ comment.content }}</span>
+                                    --- <a style="text-decoration: none"
+                                           href="{% url 'forum:profile' comment.author.id %}">{{ comment.author }}</a> {{ comment.date_created }}
+                                </p>
+                                <script>document.querySelector('#comment{{ comment.id }}').innerHTML = marked(document.querySelector("#comment{{ comment.id }}").innerHTML)</script>
+                            {% endfor %}
+
+                        {% endif %}
+
+
+                        <button id="{{ post.id }}" type="button" class="btn btn-outline-info btn-sm" data-toggle="modal"
+                                data-target="#commentModal{{ post.id }}">
+                            Comment
+                        </button>
+
+
+                    </div>
+                </div>
+
+            {% endfor %}
+        {% else %}
+            <div class="h5 m-4">
+                No Posts yet!
+            </div>
+
+        {% endif %}
+
+        <br><br><br><br>
+
+
+        <div class="h3 m-3 ">
+            Create a Post
+        </div>
+
+        <div class="card p-8 m-2 col-8">
+            <div class="card-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div style="font-weight: bold">Content</div>
+                    <style>
+                        textarea {
+                            width: 40vw;
+                            height: 10em;
+                        }
+                    </style>
+                    <div class="my-3" style="width: 40vw">{{ form.content }}</div>
+                    <div>
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

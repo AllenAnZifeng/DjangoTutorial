@@ -1,0 +1,74 @@
+{% extends 'forum/layout.html' %}
+
+{% block content %}
+    {% include 'forum/changeProile.html' %}
+    <div class="d-flex flex-row bd-highlight mb-3 align-items-start">
+        <div class="col-8 m-4 d-flex flex-column">
+            {% if threads %}
+                {% for thread in threads %}
+                    <div class="card m-2" onclick="window.location='{% url 'forum:createPost' thread.id %}'"
+                         style="cursor: pointer">
+                        <div class="card-body">
+                            <div style="display: flex;flex-direction: row;justify-content: space-between;">
+
+                                <h4 class="card-title">{{ thread.title }} --- <a style="text-decoration: none"
+                                                                                 href="{% url 'forum:profile' thread.author.id %}">{{ thread.author }}</a>
+                                </h4>
+                                <h6 class="mb-2 text-muted">{{ thread.date_created }}</h6>
+                            </div>
+                            <p class="card-text" id="threadContent{{ thread.id }}">{{ thread.content }}</p>
+                            <script>document.querySelector('#threadContent{{ thread.id }}').innerHTML = marked(document.getElementById("threadContent{{ thread.id }}").innerHTML)</script>
+                        </div>
+                    </div>
+
+
+                {% endfor %}
+
+
+
+            {% else %}
+                <div class="card m-2">
+                    <div class="card-body">
+                        <h5 class="card-title">No Threads yet</h5>
+                        <p class="card-text">You can create a thread after login.</p>
+                    </div>
+                </div>
+
+            {% endif %}
+
+
+        </div>
+        <div class="card col-3 mt-5 d-flex flex-column">
+            <div class="card-body align-items-start">
+
+
+                {% if request.user.is_authenticated %}
+
+                    {% if request.user.forum_user %}
+                        <div class="card-text" style="display: flex;flex-direction:column;justify-content: center;">
+                            <a href="{% url 'forum:createThread' %}" class="btn btn-primary">Create a Thread</a>
+                            {% if request.user.forum_user.picture %}
+                                <img style="border-radius: 50%;max-width: 100%;margin: 2em 0"
+                                     src="{{ request.user.forum_user.picture.url }}">
+                            {% endif %}
+                            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal"
+                                    data-target="#profileModal">
+                                Change profile image
+                            </button>
+                        </div>
+                    {% else %}
+                        <p class="card-text" style="display: flex;justify-content: center;">
+                            <a href="{% url 'forum:activate' %}" class="btn btn-danger">Activate</a>
+                        </p>
+                    {% endif %}
+                {% else %}
+                    <h5 class="card-title">
+                        Please login first
+                    </h5>
+                {% endif %}
+        </div>
+    </div>
+    </div>
+
+
+{% endblock %}
