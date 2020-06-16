@@ -17,7 +17,7 @@
                 </div>
 
 
-                <p class="card-text" id="threadContent">{{ thread.content }}</p>
+                <p style="font-size: 1.2em" class="card-text" id="threadContent">{{ thread.content }}</p>
                 <script>document.querySelector('#threadContent').innerHTML = marked(document.getElementById("threadContent").innerHTML)</script>
             </div>
         </div>
@@ -45,7 +45,7 @@
                         <script>document.querySelector('#post{{ post.id }}').innerHTML = marked(document.querySelector("#post{{ post.id }}").innerHTML)</script>
 
                         {% if post.comments.all %}
-                            <div class="h5 mt-3 mb-2 ">
+                            <div class="h5 mt-3 mb-2 text-muted">
                                 Comments
                             </div>
 
