@@ -47,21 +47,24 @@ def create_thread(request):
     return render(request, 'forum/createThread.html', context)
 
 
-@login_required(login_url='authentication:login')
+
 def create_post(request, pk):
     form = PostForm()
     thread = Threads.objects.get(pk=pk)
     posts = thread.posts.all()
 
     if request.method == 'POST':
-        form = PostForm(request.POST)
-        print(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)  # type: Posts
-            post.author = request.user.forum_user
-            post.thread = thread
-            post.save()
-            return redirect('forum:createPost', pk=pk)
+        if request.user.is_authenticated:
+            form = PostForm(request.POST)
+            print(request.POST)
+            if form.is_valid():
+                post = form.save(commit=False)  # type: Posts
+                post.author = request.user.forum_user
+                post.thread = thread
+                post.save()
+                return redirect('forum:createPost', pk=pk)
+        else:
+            return redirect('authentication:login')
 
     context = {'form': form, 'thread': thread, 'posts': posts}
     return render(request, 'forum/createPost.html', context)
@@ -95,7 +98,7 @@ def activate(request):
         return redirect('authentication:register')
 
 
-@login_required(login_url='authentication:login')
+
 def profile(request, pk):
     user = ForumUser.objects.get(pk=pk)
     threads = user.threads.all()
