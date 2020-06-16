@@ -47,6 +47,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # cors
     'django.middleware.common.CommonMiddleware',  # cors
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # add whitenoise static file serving
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware', # csrf
@@ -121,6 +122,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 # add prefix to different namespace
@@ -129,10 +131,11 @@ STATICFILES_DIRS = [
     ('forum',os.path.join(BASE_DIR, "forum","static")),
 ]
 
-# MEDIA_ROOT= os.path.join(BASE_DIR,'forum','static','picture')
+STATIC_ROOT=os.path.join(BASE_DIR, "staticFiles")
 MEDIA_ROOT= os.path.join(BASE_DIR, 'forum','media')
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = True
+
+# CORS_ORIGIN_ALLOW_ALL = True
 
 # CORS_ORIGIN_WHITELIST = [
 #     "http://localhost:8000",
