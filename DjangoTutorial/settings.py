@@ -24,7 +24,7 @@ SECRET_KEY = 'u=4(n-ntcvt^6qebr@5$2*jebh#h#ysetls6jilr@-$9ij$-%f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["forum-django-development.herokuapp.com","127.0.0.1"]
+ALLOWED_HOSTS = [".herokuapp.com","127.0.0.1"]
 
 # Application definition
 
