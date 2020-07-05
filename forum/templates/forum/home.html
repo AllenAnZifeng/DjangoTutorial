@@ -2,7 +2,7 @@
 
 {% block content %}
     {% include 'forum/changeProile.html' %}
-    <div class="d-flex flex-row bd-highlight mb-3 align-items-start">
+    <div class="d-flex flex-row bd-highlight mb-3 align-items-start justify-content-around">
         <div class="col-8 m-4 d-flex flex-column">
             {% if threads %}
                 {% for thread in threads %}
@@ -38,7 +38,7 @@
 
 
         </div>
-        <div class="card col-3 mt-5 d-flex flex-column">
+        <div class="card col-3 mt-5 mr-4 d-flex flex-column" style="max-width: 400px">
             <div class="card-body align-items-start">
 
 
